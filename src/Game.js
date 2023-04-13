@@ -5,6 +5,8 @@ const chess = new Chess();
 
 export const gameSubject = new BehaviorSubject();
 
+let startTime = null;
+
 export function initGame() {
   const savedGame = localStorage.getItem("savedGame");
   if (savedGame) {
@@ -15,6 +17,7 @@ export function initGame() {
 
 export function resetGame() {
   chess.reset();
+  startTime = null;
   updateGame();
 }
 
@@ -27,6 +30,9 @@ export function handleMove(from, to) {
   const { pendingPromotion } = gameSubject.getValue();
 
   if (!pendingPromotion) {
+    if (startTime === null) {
+      startTime = new Date().getTime();
+    }
     move(from, to);
   }
 }
@@ -52,12 +58,17 @@ function updateGame(pendingPromotion) {
     isGameOver,
     turn: chess.turn(),
     result: isGameOver ? getGameResult() : null,
+    time:
+      startTime === null
+        ? 0
+        : Math.floor((new Date().getTime() - startTime) / 1000),
   };
 
   localStorage.setItem("savedGame", chess.fen());
 
   gameSubject.next(newGame);
 }
+
 function getGameResult() {
   if (chess.in_checkmate()) {
     const winner = chess.turn() === "w" ? "BLACK" : "WHITE";
