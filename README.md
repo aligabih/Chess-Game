@@ -1,5 +1,6 @@
 <h1>Chess React Game</h1>
 <p>This is a chess game built using React. The game allows two players to play against each other on the same device.</p>
+<p>If you would like to demo the app visit it here: https://chess-frbo.onrender.com/</p>
 <h2>Installation and Setup</h2>
 <p>To run the game on your local machine, follow these steps:</p>
 <ol>
